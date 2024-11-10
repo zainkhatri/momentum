@@ -24,16 +24,20 @@ fn process_instruction(
     let accounts_iter = &mut accounts.iter();
 
     // Get the account of the person who initiated the transaction
-    let signer = next_account_info(accounts_iter)?;
+    let _signer = next_account_info(accounts_iter)?; // Prefix with underscore to indicate it's unused
 
     // Deserialize the instruction data to get the JournalEntry
-    let journal_entry = JournalEntry::try_from_slice(instruction_data)
+    let _journal_entry = JournalEntry::try_from_slice(instruction_data)
         .map_err(|_| ProgramError::InvalidInstructionData)?;
 
-    // Here, you'd typically store the journal entry in an account or process it further
+    // The `program_id` is also unused currently, so prefix it with an underscore
+    let _program_id = program_id;
+
+    // Future logic can be added here. For example:
+    // - Store `journal_entry` data in an on-chain account.
+    // - Check if the journal is public and broadcast accordingly.
+    // - Apply any business logic needed for your app.
+
     // Since this example focuses on transaction logging, we'll skip storage
-
-    // For demonstration, you might log the entry or perform other actions
-
     Ok(())
 }
