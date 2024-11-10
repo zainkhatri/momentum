@@ -9,8 +9,6 @@ export class JournalEntry {
     this.is_public = properties.is_public ? 1 : 0; // Store as u8
     this.timestamp = properties.timestamp || Math.floor(Date.now() / 1000);
     this.owner = properties.owner || '';
-    this.upvotes = properties.upvotes || 0;
-    this.downvotes = properties.downvotes || 0;
   }
 }
 
@@ -25,8 +23,6 @@ export const JournalEntrySchema = new Map([
         ['is_public', 'u8'],
         ['timestamp', 'u64'],
         ['owner', 'string'],
-        ['upvotes', 'u64'],
-        ['downvotes', 'u64'],
       ],
     },
   ],

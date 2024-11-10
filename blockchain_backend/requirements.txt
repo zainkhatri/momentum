@@ -1,0 +1,6 @@
+fastapi==0.95.2
+uvicorn[standard]==0.22.0
+pydantic==1.10.7
+python-dotenv==1.0.0
+solders==0.10.0  # Adjusted for compatibility
+solana==0.28.0
