@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Spotlight } from "@/components/ui/spotlight";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
