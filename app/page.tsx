@@ -4,6 +4,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import Link from "next/link";
 
 const testimonials = [
   {
@@ -44,9 +45,11 @@ const HomePage: React.FC = () => {
         {/* Header */}
         <header className="flex justify-between w-full p-5 absolute top-0 z-20">
           <div className="text-2xl font-medium ml-5">Momentum</div>
-          <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded mr-5 hover:bg-blue-600">
-            Sign Up
-          </button>
+          <Link href="/login" legacyBehavior>
+            <a className="bg-blue-500 text-white font-bold py-2 px-4 rounded mr-5 hover:bg-blue-600">
+              Sign Up
+            </a>
+          </Link>
         </header>
 
         {/* Main Content */}
