@@ -28,6 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/letter-m.png" type="image/png" />
       <body className={dm_sans.className}
       >
         {children}

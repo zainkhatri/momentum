@@ -1,192 +1,95 @@
 "use client";
-import { cn } from "@/lib/utils";
-import Link, { LinkProps } from "next/link";
-import React, { useState, createContext, useContext } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { IconMenu2, IconX } from "@tabler/icons-react";
 
-interface Links {
-  label: string;
-  href: string;
-  icon: React.JSX.Element | React.ReactNode;
-}
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
-interface SidebarContextProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  animate: boolean;
-}
+export default function Sidebar() {
+  // No default selected tab
+  const [selectedTab, setSelectedTab] = useState("");
 
-const SidebarContext = createContext<SidebarContextProps | undefined>(
-  undefined
-);
-
-export const useSidebar = () => {
-  const context = useContext(SidebarContext);
-  if (!context) {
-    throw new Error("useSidebar must be used within a SidebarProvider");
-  }
-  return context;
-};
-
-export const SidebarProvider = ({
-  children,
-  open: openProp,
-  setOpen: setOpenProp,
-  animate = true,
-}: {
-  children: React.ReactNode;
-  open?: boolean;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  animate?: boolean;
-}) => {
-  const [openState, setOpenState] = useState(false);
-
-  const open = openProp !== undefined ? openProp : openState;
-  const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
+  const getButtonStyles = (tabName: string) => {
+    const isSelected = selectedTab === tabName;
+    
+    // Default hover effect for all tabs
+    return `
+      flex items-center w-full justify-start font-semibold
+      ${isSelected ? "text-[#34347B] bg-[#C1C1D0] bg-opacity-55" : "text-[#505064]"}
+      hover:bg-[#C1C1D0] hover:bg-opacity-55
+    `;
+  };
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
-      {children}
-    </SidebarContext.Provider>
-  );
-};
-
-export const Sidebar = ({
-  children,
-  open,
-  setOpen,
-  animate,
-}: {
-  children: React.ReactNode;
-  open?: boolean;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  animate?: boolean;
-}) => {
-  return (
-    <SidebarProvider open={open} setOpen={setOpen} animate={animate}>
-      {children}
-    </SidebarProvider>
-  );
-};
-
-export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
-  return (
-    <>
-      <DesktopSidebar {...props} />
-      <MobileSidebar {...(props as React.ComponentProps<"div">)} />
-    </>
-  );
-};
-
-export const DesktopSidebar = ({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<typeof motion.div>) => {
-  const { open, setOpen, animate } = useSidebar();
-  return (
-    <>
-      <motion.div
-        className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] flex-shrink-0",
-          className
-        )}
-        animate={{
-          width: animate ? (open ? "300px" : "60px") : "300px",
-        }}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        {...props}
-      >
-        {children}
-      </motion.div>
-    </>
-  );
-};
-
-export const MobileSidebar = ({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<"div">) => {
-  const { open, setOpen } = useSidebar();
-  return (
-    <>
-      <div
-        className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full"
-        )}
-        {...props}
-      >
-        <div className="flex justify-end z-20 w-full">
-          <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
-            onClick={() => setOpen(!open)}
-          />
-        </div>
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ x: "-100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "-100%", opacity: 0 }}
-              transition={{
-                duration: 0.3,
-                ease: "easeInOut",
-              }}
-              className={cn(
-                "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
-                className
-              )}
-            >
-              <div
-                className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
-                onClick={() => setOpen(!open)}
-              >
-                <IconX />
-              </div>
-              {children}
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <aside className="w-72 bg-black p-4 hidden md:flex flex-col items-center pt-12 border-x border-gray-500">
+      <div className="flex items-center mb-8 mt-4 mr-5">
+        <button onClick={() => {}}>
+          <Link href="/" legacyBehavior>
+            <a>
+              <h1 className="text-2xl font-bold text-white">Momentum</h1>
+            </a>
+          </Link>
+        </button>
       </div>
-    </>
+      <div className="flex items-center ml-[-40px]">
+        <nav className="flex-1 w-full text-[#505064] space-y-1.5">
+          <Button
+            variant="ghost"
+            className={`${getButtonStyles("All Projects")} ml-[5px] mb-1`}
+            onClick={() => {
+              setSelectedTab("All Projects");
+              window.location.href = '/feed';
+            }}
+          >
+            <Image src="icons/home-variant.svg" alt="Home" width={20} height={15} className="mr-3 mt-[-4px]" />
+            <span className="text-white">Home</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className={`${getButtonStyles("Your Projects")} mb-1`}
+            onClick={() => {
+              setSelectedTab("Your Projects");
+              window.location.href = '/profile';
+            }}
+          >
+            <Image src="icons/account.svg" alt="Your projects" width={30} height={24} className="mr-2 mt-[-4px]" />
+            <span className="text-white">Your Journals</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className={`${getButtonStyles("Shared with You")} mb-1`}
+            onClick={() => setSelectedTab("Shared with You")}
+          >
+            <Image src="icons/shared.svg" alt="Shared with you" width={30} height={24} className="mr-2 mt-[-4px]" />
+            <span className="text-white">Likes</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className={`${getButtonStyles("Archived")} mb-1 ml-1`}
+            onClick={() => setSelectedTab("Archived")}
+          >
+            <Image src="icons/archive.svg" alt="Archived" width={25} height={24} className="mr-[9px] mt-[-4px]" />
+            <span className="text-white">Archived</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className={`${getButtonStyles("Trash")} mb-1`}
+            onClick={() => setSelectedTab("Trash")}
+          >
+            <Image src="icons/delete.svg" alt="Trash" width={30} height={24} className="mr-2 mt-[-4px] ml-[1.5px]" />
+            <span className="text-white">Trash</span>
+          </Button>
+        </nav>
+      </div>
+
+      <div className="w-full mt-auto mb-1 p-4">
+        <Button
+          className="w-full mt-auto font-semibold bg-blue-500 text-white text-md hover:opacity-90 hover:bg-blue-00"
+          onClick={() => window.location.href = '/post'}
+        >
+          + New
+        </Button>
+      </div>
+    </aside>
   );
-};
-
-export const SidebarLink = ({
-  link,
-  className,
-  ...props
-}: {
-  link: Links;
-  className?: string;
-  props?: LinkProps;
-}) => {
-  const { open, animate } = useSidebar();
-  return (
-    <Link
-      href={link.href}
-      className={cn(
-        "flex items-center justify-start gap-2  group/sidebar py-2",
-        className
-      )}
-      {...props}
-    >
-      {link.icon}
-
-      <motion.span
-        animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
-          opacity: animate ? (open ? 1 : 0) : 1,
-        }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-      >
-        {link.label}
-      </motion.span>
-    </Link>
-  );
-};
-
-export default Sidebar;
+}

@@ -4,6 +4,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import Link from "next/link";
 
 const testimonials = [
   {
@@ -13,25 +14,25 @@ const testimonials = [
     title: "A Night at HackSC",
   },
   {
-    quote: "I grinded 9 hours to get the API working.",
+    quote: "I grinded 9 hours to get the API working. Spent a lot of time at Parkside Dining Hall and drank 3 celcius energy drinks.", 
     name: "Mohsin Khawaja",
     title: "I Hate APIs",
   },
   {
     quote:
-      "I crashed out today because Mohsin took 9 hours on the API, but parkside dining hall was fire today.",
+      "I crashed out today because Mohsin took 9 hours on the API, but parkside dining hall was fire today. I also used Solana to allow users to post their journals on the blockchain.",
     name: "Zain Khatri",
     title: "Egomaniac crashes out",
   },
   {
-    quote: "I love love. I also made the button green.",
+    quote: "I love love. I also made the button green. Worked on Figma and assisted in UI/UX design. Lead PM.",
     name: "Bilal Mulic",
-    title: "FEIN",
+    title: "Green Button",
   },
   {
-    quote: "I cant quite fathom the western idealism.",
+    quote: "I cant quite fathom the western idealism. I assisted with the backend and UI/UX design. I created the feed and connected Zain's blockchain integration.",
     name: "Haadi Razzak",
-    title: "FENT",
+    title: "All Nighter",
   },
 ];
 
@@ -43,10 +44,12 @@ const HomePage: React.FC = () => {
       <BackgroundLines className="flex items-center justify-center w-full bg-black">
         {/* Header */}
         <header className="flex justify-between w-full p-5 absolute top-0 z-20">
-          <div className="text-2xl font-medium ml-5">Momentum</div>
-          <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded mr-5 hover:bg-blue-600">
-            Sign Up
-          </button>
+          <div className="text-2xl font-light ml-5">Momentum</div>
+          <Link href="/login" legacyBehavior>
+            <a className="bg-blue-500 text-white font-bold py-2 px-4 rounded mr-5 hover:bg-blue-600">
+              Sign Up
+            </a>
+          </Link>
         </header>
 
         {/* Main Content */}
@@ -58,7 +61,7 @@ const HomePage: React.FC = () => {
 
           {/* Title and Description */}
           <div className="relative z-10 text-center p-4 mt-20">
-            <h1 className="text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+            <h1 className="text-4xl md:text-7xl font-mediunm bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
               Momentum
             </h1>
             <TextGenerateEffect words={words} className="mt-2 text-lg text-white max-w-md mx-auto" />

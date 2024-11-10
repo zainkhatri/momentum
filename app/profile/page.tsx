@@ -1,94 +1,72 @@
 "use client";
-import React from "react";
+
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserBolt,
-} from "@tabler/icons-react";
+import Sidebar from "@/components/ui/sidebar";
+import TopBar from "@/components/ui/topbar";
+import DocumentCard from "@/components/ui/documentcard";
 
-const links = [
-  {
-    label: "Feed",
-    href: "#",
-    icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-  },
-  {
-    label: "Profile",
-    href: "#",
-    icon: <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-  },
-  {
-    label: "Logout",
-    href: "#",
-    icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-  },
-];
+export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
 
-export default function Component() {
+  const documents = [
+    { title: "Beach Day", timestamp: "1m ago" },
+    { title: "FEIN", timestamp: "40m ago" },
+    { title: "Coffee Date at Dulce", timestamp: "2 hrs ago" },
+    { title: "Travis Scott Concert", timestamp: "Apr 25, 2024" },
+    { title: "Parkside Dining Hall", timestamp: "March 27, 2023" },
+    { title: "San Diego Trip", timestamp: "Feb 20, 2023" },
+  ];
+
+  // Filter documents based on the search query
+  const filteredDocuments = documents.filter((doc) =>
+    doc.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-background flex">
-        {/* Sidebar */}
-        <div className="w-[20%] md:w-[15%] bg-gray-100 dark:bg-neutral-800">
-          <Sidebar>
-            <SidebarBody>
-              {links.map((link, index) => (
-                <SidebarLink key={index} link={link} />
-              ))}
-            </SidebarBody>
-          </Sidebar>
+    <div className="flex flex-col h-screen bg-black">
+      {/* Mobile Header */}
+      <header className="md:hidden flex items-center justify-between p-4 bg-[#EDEDED]">
+        <Button className="p-0 bg-transparent border-none shadow-none">
+          <Image src="/icons/listMobile.svg" alt="Home" width={30} height={15} className="ml-4" />
+        </Button>
+        <div className="flex items-center">
+          <h1>Momentum</h1>
         </div>
+        <Button variant="ghost" size="icon">
+          <Image src="/icons/magnify.svg" alt="Home" width={40} height={15} className="mr-6" />
+        </Button>
+      </header>
 
-        {/* Main Content */}
-        <div className="flex-1">
-          <div className="relative">
-            {/* Background Image */}
-            <div className="h-48 md:h-64 relative">
-              <Image
-                src="/profilebackground.svg"
-                alt="Profile background"
-                fill
-                className="object-cover"
-                priority
-              />
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar without documents prop */}
+        <Sidebar />
+        
+        <main className="flex-1 p-0 overflow-auto">
+          {/* Pass documents, searchQuery, and setSearchQuery to TopBar */}
+          <TopBar documents={documents} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+          <div className="flex-col align-left max-w-7xl mx-auto pl-6 pr-6 pt-4">
+            {/* Desktop Header */}
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex flex-row"></div>
             </div>
 
-            {/* Profile Image */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="relative w-32 h-32 md:w-40 md:h-40">
-                <Image
-                  src="/profileimage.svg"
-                  alt="Profile picture"
-                  fill
-                  className="rounded-full border-4 border-background"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Journals Grid */}
-          <div className="container mx-auto px-4 mt-20 md:mt-24">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {[1, 2, 3].map((journal) => (
-                <Link href="#" key={journal} className="block">
-                  <Card className="h-48 transition-transform hover:scale-105">
-                    <CardHeader>
-                      <CardTitle className="text-center">Journal {journal}</CardTitle>
-                    </CardHeader>
-                  </Card>
-                </Link>
+            {/* Display Filtered Documents */}
+            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-6 ml-auto text-black sm: ml-10">
+              {filteredDocuments.map((doc, index) => (
+                <DocumentCard key={index} title={doc.title} timestamp={doc.timestamp} onClick={() => console.log("here")} />
               ))}
             </div>
           </div>
-        </div>
+        </main>
       </div>
-    </SidebarProvider>
+
+      <Button className="md:hidden fixed right-4 bottom-4 rounded-full w-14 h-14 shadow-lg bg-[#34347B]">
+        <Plus className="h-6 w-6" />
+      </Button>
+    </div>
   );
 }
